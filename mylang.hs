@@ -37,7 +37,8 @@ codegen tokens
                
   | tok == "/" =  "\t" ++ "pop rdi" ++ "\n"
                ++ "\t" ++ "pop rax" ++ "\n"
-               ++ "\t" ++ "idiv rax, rdi" ++ "\n"
+               ++ "\t" ++ "cqo"     ++ "\n"
+               ++ "\t" ++ "idiv rdi" ++ "\n"
                ++ "\t" ++ "push rax" ++ "\n\n"
                ++ codegen rest
 

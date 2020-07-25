@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "17 15 +" > source
+echo "33 3 /" > source
 touch target
 
 stack ghc mylang.hs
