@@ -39,7 +39,9 @@ codegen tokens
                ++ "\t" ++ "pop rax" ++ "\n"
                ++ "\t" ++ "idiv rax, rdi" ++ "\n"
                ++ "\t" ++ "push rax" ++ "\n\n"
-               ++ codegen rest 
+               ++ codegen rest
+
+  | otherwise = "//Error here -- unexpected token in codegen\n"
 
   where tok = head tokens
         rest= tail tokens
