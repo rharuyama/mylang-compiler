@@ -3,39 +3,66 @@ import Data.Char
 import Text.Parsec
 import Text.Parsec.String
 
-data Exp  = Num Int
-          | Add Exp Exp
-          | Sub Exp Exp
-          | Mul Exp Exp
-          | Div Exp Exp
-          | Bkt Exp
-          deriving Show
+data Exp = Num Int
+         | Add Exp Exp
+         | Sub Exp Exp
+         | Mul Exp Exp
+         | Div Exp Exp
+         deriving Show 
 
--- expr ::= mul ('+' mul | e)
+-- expr ::= mul (+ expr | e)
 expr :: Parser Exp
 expr = do
-    t <- mul 
-    (Add t <$> (char '+' *> mul))
-      <|> (Sub t <$> (char '-' *> mul))
-      <|> pure t
+  x <- mul  
+  try $ do
+    char '+'
+    spaces
+    y <- expr  
+    return (Add x y)
+    <|> do
+      char '-'
+      spaces
+      y <- expr   
+      return (Sub x y)
+    <|> return x
 
--- mul ::= prim ('*' prim | e)
+-- mul ::= prim (* mul | e)*
 mul :: Parser Exp
 mul = do
-    f <- prim
-    (Mul f <$> (char '*' *> prim))
-      <|> (Div f <$> (char '/' *> prim))
-      <|> pure f
+  x <- prim  
+  try $ do
+    char '*'
+    spaces
+    y <- mul   
+    return (Mul x y)
+    <|> do
+      char '/'
+      spaces
+      y <- mul   
+      return (Div x y)
+    <|> return x
 
--- prim ::= '(' expr ')' | nat
+-- prim ::= num | (expr)
 prim :: Parser Exp
 prim = paren
-  <|> nat
+  <|> num
   where
-    paren = char '(' *> (expr <* char ')')
+    paren = try $ do
+      char '('
+      spaces
+      x <- expr
+      spaces
+      char ')'
+      spaces
+      return x
 
--- nat ::= '0' | '1' | ...
-nat :: Parser Exp
-nat = Num . charToInt <$> oneOf ['0'..'9']
-  where
-    charToInt c = ord c - ord '0'
+num :: Parser Exp
+num = do
+  spaces
+  p <- many1 digit
+  spaces
+  return (Num (read p :: Int))
+
+
+
+

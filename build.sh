@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo "33 3 /" > source
-touch target
+#touch source
+echo "33 3 / 10 *" > source
 
 stack ghc mylang.hs
 ./mylang 
