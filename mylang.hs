@@ -6,13 +6,17 @@ import Text.Parsec.String
 
 import Tokenize
 import Parse
---import Codegen
+import Codegen
 
--- main = do
---   cd <- getCurrentDirectory
---   src <- readFile (cd ++ "/source")
---   (writeFile (cd ++ "/target.s")) . attatchPrefix . codegen . tokenize $ src
+main = do
+   cd <- getCurrentDirectory
+   src <- readFile (cd ++ "/source")
+   (writeFile (cd ++ "/target.s")) . attatchPrefix . codegen . myParser $ src
 
-test1 =
-  parse expr "mylang" "(12 + 3) * 4 / (5 - 6)"
-  --codegen $ parse expr "mylang" "43"
+test :: Either ParseError Exp
+test = parse expr "test" "42+7"
+
+myParser :: String -> Either ParseError Exp
+myParser src = parse expr "mylang" src
+
+

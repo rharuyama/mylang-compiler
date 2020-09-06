@@ -54,12 +54,13 @@ attatchPrefix body =
   
 --
 
-codegen :: Expr -> String
-codegen (Num n) = "\t" ++ "push " ++ show n ++ "\n\n"
-codegen (Add n m) = ""
-                    ++ codegen n
-                    ++ codegen m
+codegen :: Either ParseError Exp -> String
+codegen (Right (Num n)) = "\t" ++ "push " ++ show n ++ "\n\n"
+codegen (Right (Add n m)) = ""
+                    ++ codegen (Right n)
+                    ++ codegen (Right m)
                     ++ "\t" ++ "pop rdi" ++ "\n"
                     ++ "\t" ++ "pop rax" ++ "\n"
                     ++ "\t" ++ "add rax, rdi" ++ "\n"
                     ++ "\t" ++ "push rax" ++ "\n\n"
+codegen (Left _) = "Error -- in codegen"                  
