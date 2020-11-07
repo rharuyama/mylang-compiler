@@ -6,11 +6,15 @@
 
 ビルドするには，`docker`をインストールした上で，`Dockerfile`があるディレクトリ`mylang`へ移動し，以下のコマンドを実行してください．ビルドは，環境によっては上手く動作しない可能性があります．
 ```
+git clone https://github.com/rharuyama/mylang-compiler
 docker build -t mylang-image .
-```
-
-```
 docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
+docker exec -it mylang bash
+```
+コンテナ`mylang`の中に入るので，続けて次のコマンドを入力してください．
+```
+cd home/
+sh build.sh
 ```
 
 筆者の環境だと，ビルドには約　分かかりました．

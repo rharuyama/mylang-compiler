@@ -7,3 +7,6 @@ mylang-refactored.hs
 source
 *.s
 trash/*
+target
+target.*
+#*
