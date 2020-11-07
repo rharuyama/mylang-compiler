@@ -11,7 +11,7 @@ import Codegen
 main = do
    cd <- getCurrentDirectory
    src <- readFile (cd ++ "/source")
-   (writeFile (cd ++ "/target.s")) . attatchPrefix . codegen . myParser $ src
+   (writeFile (cd ++ "/target.s")) . attatchHeadAndTail . codegen . myParser $ src
 
 test :: Either ParseError Exp
 test = parse expr "test" "42+7"

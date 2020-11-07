@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #touch source
-echo "(10 * 3 + 20) / 10" > source
+echo "7 * 10 + 5 * 10" > source
 
 stack ghc mylang.hs
 ./mylang 
