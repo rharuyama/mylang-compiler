@@ -7,6 +7,7 @@
 ビルドするには，`docker`をインストールした上で，`Dockerfile`があるディレクトリ`mylang`へ移動し，以下のコマンドを実行してください．ビルドは，環境によっては上手く動作しない可能性があります．
 ```
 git clone https://github.com/rharuyama/mylang-compiler
+cd mylang-compiler
 docker build -t mylang-image .
 docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
 docker exec -it mylang bash
@@ -17,7 +18,7 @@ cd home/
 sh build.sh
 ```
 
-筆者の環境だと，ビルドには約　分かかりました．
+筆者の環境だと，ビルドには約19分かかりました．
 
 `build.sh`は次のことを行います：
 
