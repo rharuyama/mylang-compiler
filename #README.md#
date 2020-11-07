@@ -4,13 +4,22 @@
 
 ### Build
 
-ビルドするには，`docker`をインストールした上で，`Dockerfile`があるディレクトリ`mylang`へ移動し，以下のコマンドを実行してください．ビルドは，環境によっては上手く動作しない可能性があります．
+ビルドするには，`docker`をインストールした上で，`Dockerfile`があるディレクトリ`mylang-compiler`へ移動し，以下のコマンドを実行してください．ビルドは，環境によっては上手く動作しない可能性があります．
 ```
 docker build -t mylang-image .
 ```
 
 ```
 docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
+```
+
+```
+docker exec -it mylang bash
+```
+
+```
+cd home/
+sh build.sh
 ```
 
 筆者の環境だと，ビルドには約　分かかりました．
