@@ -1,5 +1,4 @@
 
-
 build:
 	sh build.sh
 
@@ -8,5 +7,8 @@ test:
 
 clean:
 	sh clean.sh
+
+cleand:
+	sh clean_docker.sh
 
 .PHONY: build test clean
