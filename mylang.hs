@@ -4,7 +4,6 @@ import System.Directory
 import Text.Parsec
 import Text.Parsec.String
 
-import Tokenize
 import Parse
 import Codegen
 
