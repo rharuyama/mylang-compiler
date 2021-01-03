@@ -37,6 +37,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Build Docker image
+        run: docker build -t mylang-image .
+
+      - name: Run Docker container
+        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
 
       - name: Test
         run: docker exec -id mylang make test
