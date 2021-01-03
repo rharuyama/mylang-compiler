@@ -32,5 +32,4 @@ jobs:
         run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
 
       - name: Go into the container
-        run: docker exec -it mylang bash
-	
+        run: docker exec -it mylang bash	
