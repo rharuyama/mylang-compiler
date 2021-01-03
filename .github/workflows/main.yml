@@ -31,11 +31,11 @@ jobs:
       - name: Run Docker container
         run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
 
-      - name: Build inside of teh container
+      - name: Build inside of the container
         run: docker exec -d mylang make build
 
-      - name: Test
-        run: docker exec -d mylang make test
+#      - name: Test
+#        run: docker exec -d mylang make test
 
       - name: See logs
         run: docker logs -f mylang
