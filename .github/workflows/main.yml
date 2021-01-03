@@ -34,9 +34,9 @@ jobs:
       - name: Build inside of the container
         run: docker exec -d mylang make build
 
-#      - name: Test
-#        run: docker exec -d mylang make test
+      - name: Test
+        run: docker exec -d mylang make test
 
-      - name: See logs
-        run: docker logs -f mylang
+#      - name: See logs
+#        run: docker logs -f mylang
 
