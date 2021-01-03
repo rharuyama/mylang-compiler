@@ -24,10 +24,7 @@ jobs:
         run: docker build -t mylang-image .
 
       - name: Run Docker container
-        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
-
-      - name: Build inside of the container
-        run: docker exec -d mylang make build
+        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image make build
 
       - name: See logs
         run: docker logs -f mylang
@@ -42,10 +39,7 @@ jobs:
         run: docker build -t mylang-image .
 
       - name: Run Docker container
-        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
-
-      - name: Test
-        run: docker exec -id mylang make test
+        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image make test
 
       - name: See logs
         run: docker logs -f mylang
