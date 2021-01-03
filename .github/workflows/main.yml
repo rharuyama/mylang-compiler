@@ -29,10 +29,17 @@ jobs:
       - name: Build inside of the container
         run: docker exec -d mylang make build
 
+      - name: See logs
+        run: docker logs -f mylang
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Test
-        run: docker exec -d mylang make test
+        run: docker exec -id mylang make test
 
-#      - name: See logs
-#        run: docker logs -f mylang
-
+      - name: See logs
+        run: docker logs -f mylang
