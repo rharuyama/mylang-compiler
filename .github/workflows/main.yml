@@ -35,12 +35,13 @@ jobs:
         run: docker exec -d mylang make build
 
   test:
+    steps:
 
       - name: Test
         run: docker exec -d mylang make test
 
   log:
-
+     steps:
       - name: See logs
         run: docker logs -f mylang
 
