@@ -9,4 +9,4 @@ test:
 clean:
 	sh clean.sh
 
-.PHONY: test clean
+.PHONY: build test clean

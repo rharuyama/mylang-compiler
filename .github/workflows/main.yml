@@ -29,7 +29,14 @@ jobs:
         run: docker build -t mylang-image .
 
       - name: Run Docker container
-        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image bash build.sh
+        run: docker run -it -d -v $(pwd):/home/ --name mylang mylang-image
+
+      - name: Build inside of teh container
+        run: docker exec -d mylang make build
+
+      - name: Test
+        run: docker exec -d mylang make test
 
       - name: See logs
         run: docker logs -f mylang
+
