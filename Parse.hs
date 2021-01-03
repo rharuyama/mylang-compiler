@@ -8,8 +8,6 @@ data Exp = Num Int
          | Sub Exp Exp
          | Mul Exp Exp
          | Div Exp Exp
-         | Uadd Exp
-         | Usub Exp
          deriving Show 
 
 -- expr ::= mul (+ expr | e)
@@ -28,19 +26,19 @@ expr = do
       return (Sub x y)
     <|> return x
 
--- mul ::= prim (* mul | e)*
+-- mul ::= unary (* mul | e)*
 mul :: Parser Exp
 mul = do
-  x <- prim  
+  x <- prim 
   try $ do
     char '*'
     spaces
-    y <- mul   
+    y <- mul    
     return (Mul x y)
     <|> do
       char '/'
       spaces
-      y <- mul   
+      y <- mul    
       return (Div x y)
     <|> return x
 
@@ -48,19 +46,18 @@ unary :: Parser Exp
 unary = do
   try $ do
     char '+'
-    spaces
     x <- prim
-    return (Add (Num 0) x)
-    <|> do
-      char '-'
-      spaces
-      x <- prim
-      return (Sub (Num 0) x)
-
+    return x
+    -- <|> do
+    --   char '-'
+    --   x <- prim
+    --   return (Sub (Num 0) x)
+    
 -- prim ::= num | (expr)
 prim :: Parser Exp
 prim = paren
   <|> num
+  <|> unary
   where
     paren = try $ do
       char '('
