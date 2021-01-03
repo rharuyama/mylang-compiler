@@ -8,6 +8,8 @@ data Exp = Num Int
          | Sub Exp Exp
          | Mul Exp Exp
          | Div Exp Exp
+         | Uadd Exp
+         | Usub Exp
          deriving Show 
 
 -- expr ::= mul (+ expr | e)
@@ -41,6 +43,19 @@ mul = do
       y <- mul   
       return (Div x y)
     <|> return x
+
+unary :: Parser Exp
+unary = do
+  try $ do
+    char '+'
+    spaces
+    x <- prim
+    return (Add (Num 0) x)
+    <|> do
+      char '-'
+      spaces
+      x <- prim
+      return (Sub (Num 0) x)
 
 -- prim ::= num | (expr)
 prim :: Parser Exp
