@@ -23,7 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Build Docker image
         run: docker build -t mylang-image .
@@ -34,8 +34,12 @@ jobs:
       - name: Build inside of the container
         run: docker exec -d mylang make build
 
+  test:
+
       - name: Test
         run: docker exec -d mylang make test
+
+  log:
 
       - name: See logs
         run: docker logs -f mylang
