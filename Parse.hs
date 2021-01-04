@@ -48,10 +48,10 @@ unary = do
     char '+'
     x <- prim
     return x
-    -- <|> do
-    --   char '-'
-    --   x <- prim
-    --   return (Sub (Num 0) x)
+    <|> do
+      char '-'
+      x <- prim
+      return (Sub (Num 0) x)
     
 -- prim ::= num | (expr)
 prim :: Parser Exp
