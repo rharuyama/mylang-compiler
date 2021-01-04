@@ -28,6 +28,11 @@ relational = do
     --   spaces
     --   y <- trm
     --   return (Les x y)
+    <|> do
+      string ">="
+      spaces
+      y <- trm
+      return (Leq y x)
 
 -- trm ::= mul (+ trm | e)
 trm :: Parser Term

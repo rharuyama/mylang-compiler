@@ -36,5 +36,7 @@ COMMENTOUT
 assert 0 "2 <= 1"
 assert 1 "7 <= 7"
 assert 1 "-(3+5) + 10<=3 "
+assert 0 "1 >= 3"
+assert 1 "6 >= -3*+5 + 20"
 
 echo OK
