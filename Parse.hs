@@ -4,7 +4,7 @@ import Text.Parsec
 import Text.Parsec.String
 
 data Rel = Les Term Term
---         | Leq Term Term
+         | Leq Term Term
          deriving Show
 
 data Term = Num Int
@@ -14,14 +14,20 @@ data Term = Num Int
          | Div Term Term
          deriving Show
 
+-- parser 読み戻しをどうやるか．tryじゃダメなのか．
 relational :: Parser Rel
 relational = do
   x <- trm
   try $ do
-    char '<'
+    string "<="
     spaces
     y <- trm
-    return (Les x y)
+    return (Leq x y)
+    -- <|> do
+    --   string "<"
+    --   spaces
+    --   y <- trm
+    --   return (Les x y)
 
 -- trm ::= mul (+ trm | e)
 trm :: Parser Term

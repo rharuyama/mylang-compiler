@@ -20,3 +20,5 @@ myParserRel src = parse relational "mylangRel" src
 
 test1 = parseTest trm "7 + 5"
 gen2 src = codegenRel . myParserRel $ src
+test2 = parseTest relational " 3 <= 7"
+--test3 = parseTest relational " 3 < 7" -- error

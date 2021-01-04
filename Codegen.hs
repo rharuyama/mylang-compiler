@@ -25,6 +25,16 @@ codegenRel (Right (Les t u)) = ""
                             ++ "\t" ++ "setl al" ++ "\n"
                             ++ "\t" ++ "movzb rax, al" ++ "\n"
                             ++ "\t" ++ "push rax" ++ "\n\n"
+codegenRel (Right (Leq t u)) = ""
+                            ++ codegenTerm (Right t)
+                            ++ codegenTerm (Right u)
+                            ++ "\t" ++ "pop rdi" ++ "\n"
+                            ++ "\t" ++ "pop rax" ++ "\n"
+                            ++ "\t" ++ "cmp rax, rdi" ++ "\n"
+                            ++ "\t" ++ "setle al" ++ "\n"
+                            ++ "\t" ++ "movzb rax, al" ++ "\n"
+                            ++ "\t" ++ "push rax" ++ "\n\n"
+codegenRel (Left _) = "// Error here -- in codegenRel\n"                            
 
 codegenTerm :: Either ParseError Term -> String
 codegenTerm (Right (Num n)) = "\t" ++ "push " ++ show n ++ "\n\n"
