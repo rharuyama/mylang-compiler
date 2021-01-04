@@ -3,31 +3,44 @@ import Data.Char
 import Text.Parsec
 import Text.Parsec.String
 
-data Exp = Num Int
-         | Add Exp Exp
-         | Sub Exp Exp
-         | Mul Exp Exp
-         | Div Exp Exp
-         deriving Show 
+data Rel = Les Term Term
+--         | Leq Term Term
+         deriving Show
 
--- expr ::= mul (+ expr | e)
-expr :: Parser Exp
-expr = do
+data Term = Num Int
+         | Add Term Term
+         | Sub Term Term
+         | Mul Term Term
+         | Div Term Term
+         deriving Show
+
+relational :: Parser Rel
+relational = do
+  x <- trm
+  try $ do
+    char '<'
+    spaces
+    y <- trm
+    return (Les x y)
+
+-- trm ::= mul (+ trm | e)
+trm :: Parser Term
+trm = do
   x <- mul  
   try $ do
     char '+'
     spaces
-    y <- expr  
+    y <- trm  
     return (Add x y)
     <|> do
       char '-'
       spaces
-      y <- expr   
+      y <- trm   
       return (Sub x y)
     <|> return x
 
 -- mul ::= unary (* mul | e)*
-mul :: Parser Exp
+mul :: Parser Term
 mul = do
   x <- prim 
   try $ do
@@ -42,7 +55,7 @@ mul = do
       return (Div x y)
     <|> return x
 
-unary :: Parser Exp
+unary :: Parser Term
 unary = do
   try $ do
     char '+'
@@ -53,8 +66,8 @@ unary = do
       x <- prim
       return (Sub (Num 0) x)
     
--- prim ::= num | (expr)
-prim :: Parser Exp
+-- prim ::= num | (trm)
+prim :: Parser Term
 prim = paren
   <|> num
   <|> unary
@@ -62,13 +75,13 @@ prim = paren
     paren = try $ do
       char '('
       spaces
-      x <- expr
+      x <- trm
       spaces
       char ')'
       spaces
       return x
 
-num :: Parser Exp
+num :: Parser Term
 num = do
   spaces
   p <- many1 digit

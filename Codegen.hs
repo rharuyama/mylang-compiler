@@ -2,8 +2,8 @@ module Codegen where
 import Data.Char
 import Text.Parsec
 import Text.Parsec.String
-import Parse 
-  
+import Parse
+
 attatchHeadAndTail :: String -> String
 attatchHeadAndTail body =
   ".intel_syntax noprefix" ++ "\n" 
@@ -15,35 +15,46 @@ attatchHeadAndTail body =
   ++ "\t" ++ "pop rax" ++ "\n"
   ++ "\t" ++ "ret" ++ "\n"
 
-codegen :: Either ParseError Exp -> String
-codegen (Right (Num n)) = "\t" ++ "push " ++ show n ++ "\n\n"
-codegen (Right (Add n m)) = ""
-                            ++ codegen (Right n)
-                            ++ codegen (Right m)
+codegenRel :: Either ParseError Rel -> String
+codegenRel (Right (Les t u)) = ""
+                            ++ codegenTerm (Right t)
+                            ++ codegenTerm (Right u)
+                            ++ "\t" ++ "pop rdi" ++ "\n"
+                            ++ "\t" ++ "pop rax" ++ "\n"
+                            ++ "\t" ++ "cmp rax, rdi" ++ "\n"
+                            ++ "\t" ++ "setl al" ++ "\n"
+                            ++ "\t" ++ "movzb rax, al" ++ "\n"
+                            ++ "\t" ++ "push rax" ++ "\n\n"
+
+codegenTerm :: Either ParseError Term -> String
+codegenTerm (Right (Num n)) = "\t" ++ "push " ++ show n ++ "\n\n"
+codegenTerm (Right (Add n m)) = ""
+                            ++ codegenTerm (Right n)
+                            ++ codegenTerm (Right m)
                             ++ "\t" ++ "pop rdi" ++ "\n"
                             ++ "\t" ++ "pop rax" ++ "\n"
                             ++ "\t" ++ "add rax, rdi" ++ "\n"
                             ++ "\t" ++ "push rax" ++ "\n\n"
-codegen (Right (Sub n m)) = ""
-                            ++ codegen (Right n)
-                            ++ codegen (Right m)
+codegenTerm (Right (Sub n m)) = ""
+                            ++ codegenTerm (Right n)
+                            ++ codegenTerm (Right m)
                             ++ "\t" ++ "pop rdi" ++ "\n"
                             ++ "\t" ++ "pop rax" ++ "\n"
                             ++ "\t" ++ "sub rax, rdi" ++ "\n"
                             ++ "\t" ++ "push rax" ++ "\n\n"
-codegen (Right (Mul n m)) = ""
-                            ++ codegen (Right n)
-                            ++ codegen (Right m)
+codegenTerm (Right (Mul n m)) = ""
+                            ++ codegenTerm (Right n)
+                            ++ codegenTerm (Right m)
                             ++ "\t" ++ "pop rdi" ++ "\n"
                             ++ "\t" ++ "pop rax" ++ "\n"
                             ++ "\t" ++ "imul rax, rdi" ++ "\n"
                             ++ "\t" ++ "push rax" ++ "\n\n"
-codegen (Right (Div n m)) = ""
-                            ++ codegen (Right n)
-                            ++ codegen (Right m)
+codegenTerm (Right (Div n m)) = ""
+                            ++ codegenTerm (Right n)
+                            ++ codegenTerm (Right m)
                             ++ "\t" ++ "pop rdi" ++ "\n"
                             ++ "\t" ++ "pop rax" ++ "\n"
                             ++ "\t" ++ "cqo"     ++ "\n"
                             ++ "\t" ++ "idiv rax, rdi" ++ "\n"
                             ++ "\t" ++ "push rax" ++ "\n\n"                            
-codegen (Left _) = "// Error here -- in codegen\n"                  
+codegenTerm (Left _) = "// Error here -- in codegenTerm\n"                  

@@ -19,6 +19,7 @@ assert(){
     fi
 }
 
+<< COMMENTOUT
 assert 0 0
 assert 42 42
 assert 21 "5+20-4"
@@ -28,5 +29,8 @@ assert 15 '5*(9-6)'
 assert 4 '(3+5)/2'
 assert 2 '-(3+5) + 10'
 assert 5 '-3*+5 + 20'
+COMMENTOUT
+
+assert 1 "5 < 7"
 
 echo OK
